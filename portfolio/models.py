@@ -13,7 +13,7 @@ class Profile(models.Model):
 
 
 class Fund(models.Model):
-    fund_type = models.CharField(max_length=32, choices=[(1,'Crypto'), (2,'Stock')])
+    fund_type = models.CharField(max_length=32, choices=[('crypto', 'Crypto'), ('stocks', 'Stock')])
     portfolio = models.ForeignKey(Portfolio)
     user = models.ForeignKey(User)
     date = models.DateTimeField(auto_now=True)
