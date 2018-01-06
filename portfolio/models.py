@@ -70,7 +70,7 @@ class Fund(models.Model):
         total_injected_previous = 0
         total_asset_previous = 0
         cumul_previous = 0
-        shares_previous = 0
+        shares_previous = 1
         nav_share_previous = 1
         set_previous = 1
         sum_of_per_veriation = 0
