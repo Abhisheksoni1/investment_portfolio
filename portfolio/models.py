@@ -87,6 +87,8 @@ class Fund(models.Model):
                 set_previous = 1
             if nav_share_previous == 0:
                 nav_share_previous = 1
+            if shares_previous == 0:
+                shares_previous = 1
         if self.fund_type == 'crypto':
             self.dividends = 0
             self.set = 0
