@@ -35,7 +35,7 @@ class Fund(models.Model):
     fund_type = models.CharField(max_length=32, choices=[('crypto', 'Crypto'), ('stocks', 'Stock')])
     portfolio = models.ForeignKey(Portfolio)
     user = models.ForeignKey(User)
-    date = models.DateTimeField(auto_now=True)
+    date = models.DateTimeField()
     buying = models.DecimalField(max_digits=32, decimal_places=5)
     redemption = models.DecimalField(max_digits=32, decimal_places=5)
     dividends = models.DecimalField(max_digits=32, decimal_places=5)
@@ -63,5 +63,48 @@ class Fund(models.Model):
         ordering = ('date', 'portfolio')
 
     def __str__(self):
-        return self.fund_type + "_" + self.portfolio.name
+        return self.fund_type + "_" + self.portfolio.name + "_" + self.user.username + "_" + str(self.date)
 
+    def save(self, *args, **kwargs):
+        data = Fund.objects.filter(portfolio=self.portfolio)
+        total_injected_previous = 0
+        total_asset_previous = 0
+        cumul_previous = 0
+        shares_previous = 0
+        nav_share_previous = 1
+        set_previous = 1
+        sum_of_per_veriation = 0
+        if len(data) > 0:
+            total_injected_previous = data[0].total_injected
+            total_asset_previous = data[0].total_asset
+            cumul_previous = data[0].cumul_realized
+            shares_previous = data[0].shares
+            nav_share_previous = data[0].nav_share
+            set_previous = data[0].set
+            sum_of_per_veriation = sum(map(lambda i: i.per_variation, data))
+
+            if set_previous == 0:
+                set_previous = 1
+            if nav_share_previous == 0:
+                nav_share_previous = 1
+        if self.fund_type == 'crypto':
+            self.dividends = 0
+            self.set = 0
+            self.set_var = 0
+        self.total_injected = total_injected_previous + self.buying - self.redemption - self.dividends
+        self.total_asset = self.cash_balance + self.cost
+        self.unrealized = self.market_value - self.cost
+        self.per_unrealized = self.unrealized/self.cost
+        self.realized = self.total_asset - total_asset_previous - self.buying + self.redemption + self.dividends
+        self.cumul_realized = cumul_previous + self.realized
+        self.gross_nav = self.cash_balance + self.market_value
+        self.net_nav = self.gross_nav - self.expenses
+
+        self.shares = shares_previous + ((self.buying - self.dividends) / nav_share_previous) - (self.redemption / nav_share_previous)
+        self.nav_share = self.net_nav / self.shares
+        self.per_variation = self.nav_share / nav_share_previous - 1
+        self.cumul_variation = sum_of_per_veriation
+        self.set_var = (self.set - set_previous)/set_previous
+        if self.fund_type == "crypto":
+            self.set_var = 0
+        super(Fund, self).save(*args, **kwargs)
