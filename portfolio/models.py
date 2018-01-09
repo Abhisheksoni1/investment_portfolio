@@ -39,24 +39,24 @@ class Fund(models.Model):
     buying = models.DecimalField(max_digits=32, decimal_places=5)
     redemption = models.DecimalField(max_digits=32, decimal_places=5)
     dividends = models.DecimalField(max_digits=32, decimal_places=5)
-    total_injected = models.DecimalField(max_digits=32, decimal_places=5)
+    total_injected = models.DecimalField(max_digits=32, decimal_places=5, default=0)
     cash_balance = models.DecimalField(max_digits=32, decimal_places=5)
     cost = models.DecimalField(max_digits=32, decimal_places=5)
     market_value = models.DecimalField(max_digits=32, decimal_places=5)
-    total_asset = models.DecimalField(max_digits=32, decimal_places=5)
-    unrealized = models.DecimalField(max_digits=32, decimal_places=5)
-    per_unrealized = models.DecimalField(max_digits=32, decimal_places=5)
-    realized = models.DecimalField(max_digits=32, decimal_places=5)
-    cumul_realized = models.DecimalField(max_digits=32, decimal_places=5)
-    gross_nav = models.DecimalField(max_digits=32, decimal_places=5)
+    total_asset = models.DecimalField(max_digits=32, decimal_places=5, default=0)
+    unrealized = models.DecimalField(max_digits=32, decimal_places=5, default=0)
+    per_unrealized = models.DecimalField(max_digits=32, decimal_places=5, default=0)
+    realized = models.DecimalField(max_digits=32, decimal_places=5, default=0)
+    cumul_realized = models.DecimalField(max_digits=32, decimal_places=5, default=0)
+    gross_nav = models.DecimalField(max_digits=32, decimal_places=5, default=0)
     expenses = models.DecimalField(max_digits=32, decimal_places=5)
-    net_nav = models.DecimalField(max_digits=32, decimal_places=5)
-    shares = models.DecimalField(max_digits=32, decimal_places=5)
-    nav_share = models.DecimalField(max_digits=32, decimal_places=5)
-    per_variation = models.DecimalField(max_digits=32, decimal_places=5)
-    cumul_variation = models.DecimalField(max_digits=32, decimal_places=5)
+    net_nav = models.DecimalField(max_digits=32, decimal_places=5, default=0)
+    shares = models.DecimalField(max_digits=32, decimal_places=5, default=1)
+    nav_share = models.DecimalField(max_digits=32, decimal_places=5, default=1)
+    per_variation = models.DecimalField(max_digits=32, decimal_places=5, default=0)
+    cumul_variation = models.DecimalField(max_digits=32, decimal_places=5, default=0)
     set = models.DecimalField(max_digits=32, decimal_places=5)
-    set_var = models.DecimalField(max_digits=32, decimal_places=5)
+    set_var = models.DecimalField(max_digits=32, decimal_places=5, default=0)
     note = models.CharField(max_length=1000)
 
     class Meta:
@@ -75,12 +75,12 @@ class Fund(models.Model):
         set_previous = 1
         sum_of_per_veriation = 0
         if len(data) > 0:
-            total_injected_previous = data[0].total_injected
-            total_asset_previous = data[0].total_asset
-            cumul_previous = data[0].cumul_realized
-            shares_previous = data[0].shares
-            nav_share_previous = data[0].nav_share
-            set_previous = data[0].set
+            total_injected_previous = data[-1].total_injected
+            total_asset_previous = data[-1].total_asset
+            cumul_previous = data[-1].cumul_realized
+            shares_previous = data[-1].shares
+            nav_share_previous = data[-1].nav_share
+            set_previous = data[-1].set
             sum_of_per_veriation = sum(map(lambda i: i.per_variation, data))
 
             if set_previous == 0:
