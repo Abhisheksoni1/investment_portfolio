@@ -111,7 +111,7 @@ class Fund(models.Model):
         self.per_variation = self.nav_share / nav_share_previous - 1
         if nav_share_previous == 1:
             self.per_variation = 0.0
-        self.cumul_variation = sum_of_per_veriation
+        self.cumul_variation = sum_of_per_veriation + self.per_variation
         self.set_var = (self.set - set_previous)/set_previous
         if self.fund_type == "crypto":
             self.set_var = 0
