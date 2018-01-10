@@ -66,8 +66,11 @@ class Fund(models.Model):
         return self.fund_type + "_" + self.portfolio.name + "_" + self.user.username + "_" + str(self.date)
 
     def save(self, *args, **kwargs):
-        data = Fund.objects.filter(portfolio=self.portfolio)
+        data = Fund.objects.filter(portfolio=self.portfolio, user=self.user, fund_type=self.fund_type,
+                                   date__lte=self.date.date())
+
         data = data[::-1]
+        # print(data)
         total_injected_previous = 0
         total_asset_previous = 0
         cumul_previous = 0
@@ -111,3 +114,10 @@ class Fund(models.Model):
         if self.fund_type == "crypto":
             self.set_var = 0
         super(Fund, self).save(*args, **kwargs)
+        # after saving the record update next record in the db to maintain changes
+        try:
+            d = Fund.objects.filter(portfolio=self.portfolio, user=self.user, fund_type=self.fund_type)
+            index = list(d).index(self)
+            d[index+1].save()
+        except Exception:
+            return
