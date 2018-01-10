@@ -67,6 +67,7 @@ class Fund(models.Model):
 
     def save(self, *args, **kwargs):
         data = Fund.objects.filter(portfolio=self.portfolio)
+        data = data[::-1]
         total_injected_previous = 0
         total_asset_previous = 0
         cumul_previous = 0
@@ -75,12 +76,12 @@ class Fund(models.Model):
         set_previous = 1
         sum_of_per_veriation = 0
         if len(data) > 0:
-            total_injected_previous = data[-1].total_injected
-            total_asset_previous = data[-1].total_asset
-            cumul_previous = data[-1].cumul_realized
-            shares_previous = data[-1].shares
-            nav_share_previous = data[-1].nav_share
-            set_previous = data[-1].set
+            total_injected_previous = data[0].total_injected
+            total_asset_previous = data[0].total_asset
+            cumul_previous = data[0].cumul_realized
+            shares_previous = data[0].shares
+            nav_share_previous = data[0].nav_share
+            set_previous = data[0].set
             sum_of_per_veriation = sum(map(lambda i: i.per_variation, data))
 
             if set_previous == 0:
