@@ -66,11 +66,12 @@ class Fund(models.Model):
         return self.fund_type + "_" + self.portfolio.name + "_" + self.user.username + "_" + str(self.date)
 
     def save(self, *args, **kwargs):
+
         data = Fund.objects.filter(portfolio=self.portfolio, user=self.user, fund_type=self.fund_type,
                                    date__lte=self.date.date())
 
         data = data[::-1]
-        # print(data)
+        print(data)
         total_injected_previous = 0
         total_asset_previous = 0
         cumul_previous = 0
@@ -78,7 +79,7 @@ class Fund(models.Model):
         nav_share_previous = 1
         set_previous = 1
         sum_of_per_veriation = 0
-        if len(data) > 0:
+        if data:
             total_injected_previous = data[0].total_injected
             total_asset_previous = data[0].total_asset
             cumul_previous = data[0].cumul_realized
@@ -121,5 +122,6 @@ class Fund(models.Model):
             d = Fund.objects.filter(portfolio=self.portfolio, user=self.user, fund_type=self.fund_type)
             index = list(d).index(self)
             d[index+1].save()
-        except Exception:
+        except Exception as e:
+            print(e)
             return
