@@ -62,8 +62,8 @@ class FundAdmin(admin.ModelAdmin):
                         stock.update({i.name: parse_obj(stock_fund[0]).update({'set': float(stock_fund[0].set)})})
                     else:
                         stock.update({i.name: ''})
-                print(json.dumps(crypto))
-                print(json.dumps(stock))
+                # print(json.dumps(crypto))
+                # print(json.dumps(stock))
 
                 response.context_data.update({'crypto': crypto,
                                               'stocks': stock})
