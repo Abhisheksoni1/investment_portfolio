@@ -19,28 +19,33 @@ class FundAdmin(admin.ModelAdmin):
             request,
             extra_context=extra_context,
         )
-        try:
-            qs = response.context_data['cl']
-        except (AttributeError, KeyError):
-            return response
         return response
 
     def changeform_view(self, request, object_id=None, form_url='', extra_context=None):
         response = super(FundAdmin, self).changeform_view(request, object_id=object_id,
                          form_url=form_url, extra_context=extra_context)
         try:
-            fund_obj = Fund.objects.get(id=object_id)
-            funds = Fund.objects.filter(portfolio=fund_obj.portfolio, user=fund_obj.user, fund_type=fund_obj.fund_type,
-                                        date__lte=fund_obj.date.date())
-            funds = funds[::-1]
-            response.context_data.update({'data': funds[0]})
+            if object_id:
+                fund_obj = Fund.objects.get(id=object_id)
+                funds = Fund.objects.filter(portfolio=fund_obj.portfolio, user=fund_obj.user, fund_type=fund_obj.fund_type,
+                                            date__lte=fund_obj.date.date())
+                funds = funds[::-1]
+                response.context_data.update({'data': funds[0]})
+            else:
+                crypto_funds = Fund.objects.filter(fund_type='crypto')[::-1]
+                stock_funds = Fund.objects.filter(fund_type='stocks')[::-1]
+                crypto, stock = None, None
+                if crypto_funds:
+                    crypto = crypto_funds[0]
+                if stock_funds:
+                    stock = stock_funds[0]
+                response.context_data.update({'stock': stock or '',
+                                              'crypto': crypto or ''})
+                print(response.context_data)
         except Exception as e:
             print(e)
             return response
         return response
-
-
-
 
 
 admin.site.register(Fund, FundAdmin)
