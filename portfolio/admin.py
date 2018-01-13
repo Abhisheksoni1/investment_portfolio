@@ -1,10 +1,6 @@
 from django.contrib import admin
-
-# Register your models here.
-from django.forms import model_to_dict
 import json
 from .models import *
-
 admin.site.register(Profile)
 admin.site.register(Portfolio)
 
@@ -54,37 +50,20 @@ class FundAdmin(admin.ModelAdmin):
                     stock_fund = funds.filter(portfolio=i, fund_type='stocks', user=request.user)
                     if crypto_fund:
                         crypto_fund = crypto_fund[::-1]
-                        crypto.update({i.name: parse_obj(crypto_fund[0])})
+                        crypto.update({i.id: parse_obj(crypto_fund[0])})
                     else:
-                        crypto.update({i.name: ''})
+                        crypto.update({i.id: ''})
                     if stock_fund:
                         stock_fund = stock_fund[::-1]
-                        stock.update({i.name: parse_obj(stock_fund[0]).update({'set': float(stock_fund[0].set)})})
+                        stock.update({i.id: parse_obj(stock_fund[0]).update({'set': float(stock_fund[0].set)})})
                     else:
-                        stock.update({i.name: ''})
+                        stock.update({i.id: ''})
                 # print(json.dumps(crypto))
                 # print(json.dumps(stock))
 
                 response.context_data.update({'crypto': json.dumps(crypto),
                                               'stock': json.dumps(stock)})
 
-                # crypto_funds = ''
-                # stock_funds = ''
-                # crypto, crypto1, stock = None, None, None
-                # print(crypto_funds)
-                # print(stock_funds)
-                # print(btc)
-                # if crypto_funds:
-                #     crypto = json.dumps({'key1': 'hello', 'key2': 2.0, 'key3': 3})
-                #     crypto1 = json.dumps({'fund_type': crypto_funds[0].fund_type,
-                #                          'portfolio': crypto_funds[0].portfolio.name,
-                #                          'buying': float(crypto_funds[0].buying)})
-                # if stock_funds:
-                #     stock = json.dumps(model_to_dict(stock_funds[0]))
-                # response.context_data.update({'stock': stock or '',
-                #                               'crypto': crypto or '',
-                #                               'test': crypto1})
-                # print(response.context_data['crypto'])
         except Exception as e:
             print(e)
             return response
