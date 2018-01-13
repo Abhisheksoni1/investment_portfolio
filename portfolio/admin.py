@@ -1,6 +1,8 @@
 from django.contrib import admin
 
 # Register your models here.
+from django.forms import model_to_dict
+
 from .models import *
 
 admin.site.register(Profile)
@@ -37,12 +39,12 @@ class FundAdmin(admin.ModelAdmin):
                 stock_funds = Fund.objects.filter(fund_type='stocks')[::-1]
                 crypto, stock = None, None
                 if crypto_funds:
-                    crypto = crypto_funds[0].__dict__
+                    crypto = model_to_dict(crypto_funds[0])
                 if stock_funds:
-                    stock = stock_funds[0].__dict__
+                    stock = model_to_dict(stock_funds[0])
                 response.context_data.update({'stock': stock or '',
                                               'crypto': crypto or ''})
-                print(response.context_data)
+                print(response.context_data['crypto'])
         except Exception as e:
             print(e)
             return response
