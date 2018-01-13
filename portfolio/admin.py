@@ -11,7 +11,8 @@ def parse_obj(obj):
                 'shares': float(obj.shares),
                 'cumul_realized': float(obj.cumul_realized),
                 'nav_share': float(obj.nav_share),
-                'cumul_variation': float(obj.cumul_variation)
+                'cumul_variation': float(obj.cumul_variation),
+                'set': float(obj.set)
              }
     return obj_dict
 
@@ -55,11 +56,11 @@ class FundAdmin(admin.ModelAdmin):
                         crypto.update({i.id: ''})
                     if stock_fund:
                         stock_fund = stock_fund[::-1]
-                        stock.update({i.id: parse_obj(stock_fund[0]).update({'set': float(stock_fund[0].set)})})
+                        stock.update({i.id: parse_obj(stock_fund[0])})
                     else:
                         stock.update({i.id: ''})
-                # print(json.dumps(crypto))
-                # print(json.dumps(stock))
+                print(json.dumps(crypto))
+                print(json.dumps(stock))
 
                 response.context_data.update({'crypto': json.dumps(crypto),
                                               'stock': json.dumps(stock)})
