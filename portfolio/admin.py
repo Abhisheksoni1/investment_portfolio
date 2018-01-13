@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from django.forms import model_to_dict
-
+import json
 from .models import *
 
 admin.site.register(Profile)
@@ -37,14 +37,17 @@ class FundAdmin(admin.ModelAdmin):
             else:
                 crypto_funds = Fund.objects.filter(fund_type='crypto')[::-1]
                 stock_funds = Fund.objects.filter(fund_type='stocks')[::-1]
-                crypto, stock = None, None
+                crypto, crypto1, stock = None, None, None
                 if crypto_funds:
-                    crypto = {'key1': 'hello', 'key2': 2.0, 'key3': 3}
-                    # crypto = model_to_dict(crypto_funds[0])
+                    crypto = json.dumps({'key1': 'hello', 'key2': 2.0, 'key3': 3})
+                    crypto1 = json.dumps({'fund_type': crypto_funds[0].fund_type,
+                                         'portfolio': crypto_funds[0].portfolio.name,
+                                         'buying': float(crypto_funds[0].buying)})
                 if stock_funds:
-                    stock = model_to_dict(stock_funds[0])
+                    stock = json.dumps(model_to_dict(stock_funds[0]))
                 response.context_data.update({'stock': stock or '',
-                                              'crypto': crypto or ''})
+                                              'crypto': crypto or '',
+                                              'test': crypto1})
                 print(response.context_data['crypto'])
         except Exception as e:
             print(e)
