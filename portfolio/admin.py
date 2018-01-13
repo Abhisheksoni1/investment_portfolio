@@ -66,7 +66,7 @@ class FundAdmin(admin.ModelAdmin):
                 # print(json.dumps(stock))
 
                 response.context_data.update({'crypto': crypto,
-                                              'stocks': stock})
+                                              'stock': stock})
 
                 # crypto_funds = ''
                 # stock_funds = ''
