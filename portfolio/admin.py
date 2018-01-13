@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from . models import *
+from .models import *
 
 admin.site.register(Profile)
 admin.site.register(Portfolio)
@@ -23,11 +23,12 @@ class FundAdmin(admin.ModelAdmin):
 
     def changeform_view(self, request, object_id=None, form_url='', extra_context=None):
         response = super(FundAdmin, self).changeform_view(request, object_id=object_id,
-                         form_url=form_url, extra_context=extra_context)
+                                                          form_url=form_url, extra_context=extra_context)
         try:
             if object_id:
                 fund_obj = Fund.objects.get(id=object_id)
-                funds = Fund.objects.filter(portfolio=fund_obj.portfolio, user=fund_obj.user, fund_type=fund_obj.fund_type,
+                funds = Fund.objects.filter(portfolio=fund_obj.portfolio, user=fund_obj.user,
+                                            fund_type=fund_obj.fund_type,
                                             date__lte=fund_obj.date.date())
                 funds = funds[::-1]
                 response.context_data.update({'data': funds[0]})
