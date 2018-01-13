@@ -12,6 +12,7 @@ class FundAdmin(admin.ModelAdmin):
                     'realized', 'gross_nav', 'expenses', 'net_nav', 'shares',)
     list_filter = ('fund_type', 'portfolio', 'user')
     change_list_template = 'admin/fund_change_list.html'
+    change_form_template = 'admin/fund_change_form.html'
 
     def changelist_view(self, request, extra_context=None):
         response = super(FundAdmin, self).changelist_view(
