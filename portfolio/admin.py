@@ -37,9 +37,9 @@ class FundAdmin(admin.ModelAdmin):
                 stock_funds = Fund.objects.filter(fund_type='stocks')[::-1]
                 crypto, stock = None, None
                 if crypto_funds:
-                    crypto = crypto_funds[0]
+                    crypto = crypto_funds[0].__dict__
                 if stock_funds:
-                    stock = stock_funds[0]
+                    stock = stock_funds[0].__dict__
                 response.context_data.update({'stock': stock or '',
                                               'crypto': crypto or ''})
                 print(response.context_data)
