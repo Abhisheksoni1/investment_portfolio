@@ -24,7 +24,9 @@
 {% endif %}
 
 {% block content %}<div id="content-main">
-    <input  hidden id ="fundDataPre" value='{{stock}}' />
+    <input   hidden id ="stockDataPre" value='{{stock}}' />
+        <input   hidden id ="cryptoDataPre" value='{{crypto}}' />
+
     {% block object-tools %}
     {% if change %}{% if not is_popup %}
     <ul class="object-tools">
@@ -110,7 +112,14 @@
                  $( "#id_portfolio" ).change(function() {
 
                         var portfolio = $('#id_portfolio').val();
-                        var fundValue = $('#fundDataPre').val();
+                        var fundValue = "";
+                        var fund = $('#id_fund_type').val();
+                        if(fund  == "crypto"){
+                             fundValue = $('#cryptoDataPre').val();
+                        }else{
+                             fundValue = $('#stockDataPre').val();
+                        }
+
                         fundValue = JSON.parse(fundValue);
 
                         if(fundValue[portfolio]){
