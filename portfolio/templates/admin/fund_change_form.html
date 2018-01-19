@@ -24,7 +24,7 @@
 {% endif %}
 
 {% block content %}<div id="content-main">
-    <input  hidden id ="fundData" value='{{crypto}}' />
+    <input  hidden id ="fundDataPre" value='{{stock}}' />
     {% block object-tools %}
     {% if change %}{% if not is_popup %}
     <ul class="object-tools">
@@ -104,13 +104,13 @@
                     }
                 });
 
-                var fundData = {"total_injected": 0, "total_asset": 0, "shares": 0, "cumul_realized": 1, "nav_share": 1, "cumul_variation": 1,"set": 1};
+                var fundData = {"total_injected": 0, "total_asset": 0, "shares": 0, "cumul_realized": 0, "nav_share": 1, "cumul_variation": 0,"set": 1};
 
 
                  $( "#id_portfolio" ).change(function() {
 
                         var portfolio = $('#id_portfolio').val();
-                        var fundValue = $('#fundData').val();
+                        var fundValue = $('#fundDataPre').val();
                         fundValue = JSON.parse(fundValue);
 
                         if(fundValue[portfolio]){
@@ -122,35 +122,35 @@
                 $('#id_total_injected').on('focus', function(){
                     if(!$('#id_total_injected').val()){
                         var tempValue = parseInt(fundData.total_injected) +  parseInt($('#id_buying').val()) - $('#id_redemption').val() - $('#id_dividends').val();
-                        $('#id_total_injected').val(tempValue);
+                        $('#id_total_injected').val(tempValue.toFixed(4));
                     }
                 });
 
                 $('#id_total_asset').on('focus', function(){
                     if(!$('#id_total_asset').val()){
                         var tempValue =parseInt($('#id_cash_balance').val()) + parseInt($('#id_cost').val());
-                        $('#id_total_asset').val(tempValue);
+                        $('#id_total_asset').val(tempValue.toFixed(4));
                     }
                 });
 
                  $('#id_unrealized').on('focus', function(){
                     if(!$('#id_unrealized').val()){
                         var tempValue =$('#id_market_value').val() - $('#id_cost').val();
-                        $('#id_unrealized').val(tempValue);
+                        $('#id_unrealized').val(tempValue.toFixed(4));
                     }
                 });
 
                  $('#id_per_unrealized').on('focus', function(){
                     if(!$('#id_per_unrealized').val()){
-                        var tempValue =$('#id_unrealized').val() / $('#id_cost').val();
-                        $('#id_per_unrealized').val(tempValue);
+                        var tempValue =($('#id_unrealized').val() / $('#id_cost').val()) * 100;
+                        $('#id_per_unrealized').val(tempValue.toFixed(4));
                     }
                 });
 
                 $('#id_realized').on('focus', function(){
                     if(!$('#id_realized').val()){
                         var tempValue =$('#id_total_asset').val() - fundData.total_asset  - parseInt($('#id_buying').val()) + parseInt($('#id_redemption').val()) + parseInt($('#id_dividends').val());
-                        $('#id_realized').val(tempValue);
+                        $('#id_realized').val(tempValue.toFixed(4));
                     }
                 });
                 //        self.realized = self.total_asset - total_asset_previous - self.buying + self.redemption + self.dividends
@@ -158,7 +158,7 @@
                 $('#id_cumul_realized').on('focus', function(){
                     if(!$('#id_cumul_realized').val()){
                         var tempValue = parseInt(fundData.cumul_realized) + parseInt($('#id_realized').val());
-                        $('#id_cumul_realized').val(tempValue);
+                        $('#id_cumul_realized').val(tempValue.toFixed(4));
                     }
                 });
                 // self.cumul_realized = cumul_previous + self.realized
@@ -167,14 +167,14 @@
                 $('#id_gross_nav').on('focus', function(){
                     if(!$('#id_gross_nav').val()){
                         var tempValue =parseInt($('#id_cash_balance').val()) + parseInt($('#id_market_value').val());
-                        $('#id_gross_nav').val(tempValue);
+                        $('#id_gross_nav').val(tempValue.toFixed(4));
                     }
                 });
 
                  $('#id_net_nav').on('focus', function(){
                     if(!$('#id_net_nav').val()){
                         var tempValue =$('#id_gross_nav').val() - $('#id_expenses').val();
-                        $('#id_net_nav').val(tempValue);
+                        $('#id_net_nav').val(tempValue.toFixed(4));
                     }
                 });
 
@@ -197,7 +197,7 @@
 
                 $('#id_per_variation').on('focus', function(){
                     if(!$('#id_per_variation').val()){
-                        var tempValue =$('#id_nav_share').val() / fundData.nav_share -1;
+                        var tempValue =($('#id_nav_share').val() / fundData.nav_share -1);
                         $('#id_per_variation').val(tempValue.toFixed(4));
                     }
                 });
@@ -207,8 +207,8 @@
 
                 $('#id_cumul_variation').on('focus', function(){
                     if(!$('#id_cumul_variation').val()){
-                        var tempValue = parseInt(fundData.cumul_variation) +  parseInt($('#id_per_variation').val());
-                        $('#id_cumul_variation').val(tempValue);
+                        var tempValue = parseFloat(fundData.cumul_variation) +  parseFloat($('#id_per_variation').val());
+                        $('#id_cumul_variation').val(tempValue.toFixed(4));
                     }
                 });
 
@@ -221,9 +221,14 @@
                             fundData.set = 1;
                         }
                         var tempValue = ($('#id_set').val() - fundData.set ) / fundData.set ;
-                        $('#id_set_var').val(tempValue);
+                        $('#id_set_var').val(tempValue.toFixed(4));
                     }
                 });
+
+$("label[for*='id_per_unrealized']").html("% unrealized");
+$("label[for*='id_per_variation']").html("% variation");
+
+
 
                   // self.set_var = (self.set - set_previous)/set_previous
 
