@@ -15,6 +15,7 @@ class Portfolio(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    shares = models.DecimalField(max_digits=32, decimal_places=4, default=0)
 
     def __str__(self):
         return self.user.first_name
@@ -32,6 +33,7 @@ def save_user_profile(sender, instance, **kwargs):
 
 
 class Fund(models.Model):
+
     fund_type = models.CharField(max_length=32, choices=[('crypto', 'Crypto'), ('stocks', 'Stock')])
     portfolio = models.ForeignKey(Portfolio)
     user = models.ForeignKey(User)

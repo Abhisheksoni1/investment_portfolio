@@ -18,6 +18,12 @@ def parse_obj(obj):
 
 
 class FundAdmin(admin.ModelAdmin):
+
+    def render_change_form(self, request, context, *args, **kwargs):
+        # to do changes before the page loads selecting only admin user to use ForeignKey
+        context['adminform'].form.fields['user'].queryset = User.objects.filter(is_staff=True)
+        return super(FundAdmin, self).render_change_form(request, context, *args, **kwargs)
+
     list_display = ('fund_type', 'portfolio', 'user', 'cash_balance', 'cost', 'market_value', 'total_asset',
                     'realized', 'gross_nav', 'expenses', 'net_nav', 'shares',)
     list_filter = ('fund_type', 'portfolio', 'user')
