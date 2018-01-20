@@ -21,7 +21,7 @@ class FundAdmin(admin.ModelAdmin):
 
     def render_change_form(self, request, context, *args, **kwargs):
         # to do changes before the page loads selecting only admin user to use ForeignKey
-        context['adminform'].form.fields['user'].queryset = User.objects.filter(user=request.user)
+        context['adminform'].form.fields['user'].queryset = User.objects.filter(username=request.user.username)
         return super(FundAdmin, self).render_change_form(request, context, *args, **kwargs)
 
     list_display = ('fund_type', 'portfolio', 'user', 'cash_balance', 'cost', 'market_value', 'total_asset',
