@@ -1,8 +1,21 @@
 from django.contrib import admin
 import json
 from .models import *
-admin.site.register(Profile)
+
 admin.site.register(Portfolio)
+
+
+class ClientAdmin(admin.ModelAdmin):
+    def render_change_form(self, request, context, *args, **kwargs):
+        # to do changes before the page loads selecting only admin user to use ForeignKey
+        context['adminform'].form.fields['user'].queryset = User.objects.filter(is_staff=False)
+        return super(ClientAdmin, self).render_change_form(request, context, *args, **kwargs)
+
+    list_display = ('user', 'shares', 'portfolio')
+    list_filter = ('user', 'portfolio')
+
+
+admin.site.register(Client, ClientAdmin)
 
 
 def parse_obj(obj):
