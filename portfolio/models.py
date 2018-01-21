@@ -17,6 +17,9 @@ class Client(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     shares = models.DecimalField(max_digits=32, decimal_places=4, default=0)
     portfolio = models.ForeignKey(Portfolio)
+    name = models.CharField(max_length=128)
+    nav = models.DecimalField(default=0, max_digits=32, decimal_places=4)
+    value = models.DecimalField(decimal_places=4, max_digits=32, default=0)
 
     def __str__(self):
         return self.user.first_name + self.portfolio.name
