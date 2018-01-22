@@ -15,7 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-
+from portfolio import views
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^signup/$', views.signup, name='signup'),
+    url(r'^login/$', views.login_view, name='login'),
+    url(r'^logout/$', views.logout_view, name='logout'),
+    url(r'^$', views.home, name='home'),
+
 ]
