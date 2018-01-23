@@ -1,9 +1,15 @@
 {% extends 'base.html' %}
 {% block title %}Logout{% endblock %}
 {% block content %}
-
-<b><h1>Signout Successfully...</h1></b>
-<b><h2>Want To Login Again ?</h2></B>
-<a href="{% url 'login' %}">Login</a>
+<section id="banner">
+    <div class="bg-color">
+        <div class="container">
+            <div style="text-align:center;margin-top:100px;">
+                <h2>Signout Successfully...</h2>
+                <p>Want to login again <a href="{% url 'login' %}">Login</a></p>
+            </div>
+        </div>
+    </div>
+</section>
 
 {% endblock %}
