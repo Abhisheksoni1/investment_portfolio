@@ -24,10 +24,15 @@ SECRET_KEY = 'l3e5ai5zsr8gy9dq%slyp-*=r$k6jpqz2+kgn@_#s^!#35j=2!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = 'login'
 
 ALLOWED_HOSTS = []
 
-
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'portfolio.authentication.EmailAuthBackend',
+)
 # Application definition
 
 INSTALLED_APPS = (
