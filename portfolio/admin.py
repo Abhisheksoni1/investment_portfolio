@@ -1,6 +1,9 @@
 from django.contrib import admin
 import json
 from .models import *
+admin.site.index_title = 'Investment Portfolio Admin'
+admin.site.site_header = 'Investment Portfolio'
+admin.site.index_title = 'Investment Portfolio Site Administrator'
 
 admin.site.register(Portfolio)
 
