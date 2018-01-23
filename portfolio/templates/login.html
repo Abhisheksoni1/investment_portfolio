@@ -1,9 +1,13 @@
-{% extends 'portal.html' %}
+{% extends 'base.html' %}
 {% block title %}Login {% endblock %}
 {% block content %}
 
-<div   class="container">
-  <div class="col-md-offset-8 col-md-5" style="margin:auto;margin-top:100px;padding:10px;background-color: rgba(0,0,0, 0.1) !important;border-color: #c9222d !important;">
+
+<section id="banner">
+    <div class="bg-color">
+        <div class="container">
+
+  <div  style="width:400px;margin:auto;margin-top:90px;padding:10px;">
 <form method="post">
         {% csrf_token %}
           <div id="signupbox" class="maindiv">
@@ -54,7 +58,14 @@
 
 </form>
 </div>
-</div>
+
+        </div>
+
+    </div>
+  </section>
+
+
+
 
 
 <!--&lt;!&ndash;h1>Welcome to VirtualWallet where you can exchange you crypto assests with each other and enjoy!</h1>-->
