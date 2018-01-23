@@ -1,12 +1,10 @@
-from django.shortcuts import render
-
-# Create your views here.
+from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth import login, authenticate, logout
 from portfolio.forms import UserCreationForm
 from django.shortcuts import render
 from portfolio.forms import LoginForm
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import redirect
 
 
 def signup(request):
@@ -35,6 +33,7 @@ def signup(request):
     return render(request, 'signup.html', {'form': form})
 
 
+@login_required
 def home(request):
     return render(request, 'home.html')
 
