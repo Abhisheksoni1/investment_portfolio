@@ -19,6 +19,7 @@ class Client(models.Model):
     portfolio = models.ForeignKey(Portfolio)
     nav = models.DecimalField(default=0, max_digits=32, decimal_places=4)
     value = models.DecimalField(decimal_places=4, max_digits=32, default=0)
+    investor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='investor')
 
     def __str__(self):
         return self.user.first_name + self.portfolio.name

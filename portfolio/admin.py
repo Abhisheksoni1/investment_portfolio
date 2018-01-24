@@ -12,6 +12,7 @@ class ClientAdmin(admin.ModelAdmin):
     def render_change_form(self, request, context, *args, **kwargs):
         # to do changes before the page loads selecting only admin user to use ForeignKey
         context['adminform'].form.fields['user'].queryset = User.objects.filter(is_staff=False)
+        context['adminform'].form.fields['investor'].queryset = User.objects.filter(is_staff=True)
         return super(ClientAdmin, self).render_change_form(request, context, *args, **kwargs)
 
     list_display = ('user', 'shares', 'portfolio')

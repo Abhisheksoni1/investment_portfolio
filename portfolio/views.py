@@ -1,10 +1,33 @@
+import json
+
 from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth import login, authenticate, logout
+from django.http import HttpResponse
+
 from portfolio.forms import UserCreationForm
 from django.shortcuts import render
 from portfolio.forms import LoginForm
 from django.shortcuts import redirect
+
+from portfolio.models import Client, Fund, Portfolio
+
+
+def bar(request):
+    if request.user.is_authenticated:
+        try:
+            client = Client.objects.get(user=request.user)
+            data = Fund.objects.filter(user=client.investor, portfolio=client.portfolio)
+            dates = list(map(lambda i: i.date.strftime('%m-%d-%Y'), data))
+            net_nav = list(map(lambda i: (float(client.shares)*float(i.net_nav))/100, data))
+            item = {'dates': dates,
+                    'net_nav': net_nav}
+            return HttpResponse(json.dumps(item), content_type='application/json')
+        except Exception as e:
+            # print(e)
+            return HttpResponse(json.dumps({'error': 404}), content_type='application/json')
+    else:
+        return HttpResponse(json.dumps({'error': 'not authorise'}), content_type='application/json')
 
 
 def signup(request):
