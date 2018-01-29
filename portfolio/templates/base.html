@@ -10,7 +10,10 @@
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Satisfy|Bree+Serif|Candal|PT+Sans">
         <link rel = "stylesheet"  type = "text/css" href = "{% static 'css/style.css' %}" />
         <link rel="icon" href="{% static 'images/favicon.png' %}" type="image/gif" >
-
+        {% load highcharts_tags %}
+        <!-- enable highcharts scripts -->
+        <!-- highcharts_js (highcharts 3d highstock heatmap) you need to pass 1 or 0 if you want to enable 3d or highstock         etc...-->
+        {% highcharts_js 1 0 0 0 %}
     </head>
 <body>
 

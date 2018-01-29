@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'portfolio',
     'django_extensions',
+    'highcharts',
 )
 
 MIDDLEWARE_CLASSES = (
