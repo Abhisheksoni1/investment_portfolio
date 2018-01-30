@@ -13,10 +13,14 @@ from django.shortcuts import redirect
 from portfolio.models import Client, Fund, Portfolio
 
 
-def bar(request):
+def bar(request, id=None):
     if request.user.is_authenticated:
         try:
-            client = Client.objects.get(user=request.user)
+            if id is None:
+                client = Client.objects.filter(user=request.user)[0]
+            else:
+                client = Client.objects.get(user=request.user, portfolio__id=id)
+
             data = Fund.objects.filter(user=client.investor, portfolio=client.portfolio)
             dates = list(map(lambda i: i.date.strftime('%m-%d-%Y'), data))
             net_nav = list(map(lambda i: (float(client.shares)*float(i.net_nav))/100, data))
@@ -24,7 +28,7 @@ def bar(request):
                     'net_nav': net_nav}
             return HttpResponse(json.dumps(item), content_type='application/json')
         except Exception as e:
-            # print(e)
+            print(e)
             return HttpResponse(json.dumps({'error': 404}), content_type='application/json')
     else:
         return HttpResponse(json.dumps({'error': 'not authorise'}), content_type='application/json')
@@ -58,7 +62,10 @@ def signup(request):
 
 @login_required
 def home(request):
-    return render(request, 'home.html')
+    data = Client.objects.filter(user=request.user)
+    portfolio = map(lambda i: i.portfolio, data)
+    # print(portfolio)
+    return render(request, 'home.html', {'portfolios': portfolio})
 
 
 def login_view(request):

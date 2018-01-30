@@ -24,5 +24,7 @@ urlpatterns = [
     url(r'^bar/$', views.bar, name='bar'),
     url(r'^$', views.home, name='home'),
 
+    url(r'^(?P<id>\d+)$', views.bar, name='home'),
+
 
 ]

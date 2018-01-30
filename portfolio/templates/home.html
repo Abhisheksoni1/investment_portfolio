@@ -23,7 +23,12 @@
 
 <div class="container" style="margin-top:100px;">
     <div class="row">
-        <div class=" col-md-3 col-xs-12">menu</div>
+        <div class=" col-md-3 col-xs-12">
+            <h3><b>Portfolio</b></h3>
+            {% for portfolio in portfolios %}
+                <a href="{% url 'home'  %}">{{ portfolio.name.upper }}</a><br>
+            {% endfor %}
+        </div>
         <div class="col-md-8 col-xs-12">
             <div class="panel panel-default">
                 <div id="chart_panel" class="panel-body"
@@ -54,7 +59,7 @@ $(document).ready(function() {
     series: [{}],
     };
 
-    var chartDataUrl = "{% url 'bar' %}";
+    var chartDataUrl = "{% url 'bar'  %}";
     $.getJSON(chartDataUrl,
     function(data) {
     user_graph.xAxis.categories = data['dates'];
