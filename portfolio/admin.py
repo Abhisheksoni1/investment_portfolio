@@ -52,6 +52,9 @@ class FundAdmin(admin.ModelAdmin):
             request,
             extra_context=extra_context,
         )
+        portfolio = Portfolio.objects.all()
+        # print(portfolio)
+        response.context_data.update({'portfolios': portfolio})
         return response
 
     def changeform_view(self, request, object_id=None, form_url='', extra_context=None):

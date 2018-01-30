@@ -1,5 +1,6 @@
 import json
 
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth import login, authenticate, logout
@@ -11,6 +12,25 @@ from portfolio.forms import LoginForm
 from django.shortcuts import redirect
 
 from portfolio.models import Client, Fund, Portfolio
+
+
+@staff_member_required
+def admin_bar(request, id=None):
+    try:
+        if not id:
+            portfolio = Portfolio.objects.all()[0]
+            funds = Fund.objects.filter(user=request.user, portfolio=portfolio)
+        else:
+            funds = Fund.objects.get(user=request.user, portfolio__id=id)
+
+        dates = list(map(lambda i: i.date.strftime('%m-%d-%Y'), funds))
+        net_nav = list(map(lambda i: float(i.net_nav), funds))
+        item = {'dates': dates,
+                'net_nav': net_nav}
+        return HttpResponse(json.dumps(item), content_type='application/json')
+
+    except Exception as e:
+        return HttpResponse(json.dumps({'error': 404}), content_type='application/json')
 
 
 def bar(request, id=None):

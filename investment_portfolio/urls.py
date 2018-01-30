@@ -23,7 +23,8 @@ urlpatterns = [
     url(r'^logout/$', views.logout_view, name='logout'),
     url(r'^bar/$', views.bar, name='bar'),
     url(r'^$', views.home, name='home'),
-
+    url(r'^admin_bar/$', views.admin_bar, name='admin_bar'),
+    url(r'^admin_bar/(?P<id>\d+)$', views.admin_bar, name='admin_bar'),
     url(r'^(?P<id>\d+)$', views.bar, name='home'),
 
 
