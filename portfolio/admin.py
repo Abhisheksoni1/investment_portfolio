@@ -6,7 +6,7 @@ admin.site.site_header = 'Investment Portfolio'
 admin.site.index_title = 'Investment Portfolio Site Administrator'
 
 admin.site.register(Portfolio)
-
+admin.site.register(FundTypes)
 
 class ClientAdmin(admin.ModelAdmin):
     def render_change_form(self, request, context, *args, **kwargs):
@@ -37,8 +37,10 @@ def parse_obj(obj):
 class FundAdmin(admin.ModelAdmin):
 
     def render_change_form(self, request, context, *args, **kwargs):
-        # to do changes before the page loads selecting only admin user to use ForeignKey
+        # to do changes before the page loads selecting
+        # only admin user to use ForeignKey
         context['adminform'].form.fields['user'].queryset = User.objects.filter(username=request.user.username)
+        # context['adminform'].form.fields['fund_type'].queryset = FundTypes.objects.all()
         return super(FundAdmin, self).render_change_form(request, context, *args, **kwargs)
 
     list_display = ('fund_type', 'portfolio', 'user', 'cash_balance', 'cost', 'market_value', 'total_asset',

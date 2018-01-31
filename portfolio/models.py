@@ -13,6 +13,12 @@ class Portfolio(models.Model):
         return self.name
 
 
+class FundTypes(models.Model):
+    name = models.CharField(max_length=128)
+
+    def __str__(self):
+        return self.name
+
 class Client(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     shares = models.DecimalField(max_digits=32, decimal_places=4, default=0)
@@ -38,7 +44,7 @@ class Client(models.Model):
 
 class Fund(models.Model):
 
-    fund_type = models.CharField(max_length=32, choices=[('crypto', 'Crypto'), ('stocks', 'Stock')])
+    fund_type = models.ForeignKey(FundTypes)
     portfolio = models.ForeignKey(Portfolio)
     user = models.ForeignKey(User)
     date = models.DateTimeField()
