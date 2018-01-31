@@ -8,6 +8,7 @@ admin.site.index_title = 'Investment Portfolio Site Administrator'
 admin.site.register(Portfolio)
 admin.site.register(FundTypes)
 
+
 class ClientAdmin(admin.ModelAdmin):
     def render_change_form(self, request, context, *args, **kwargs):
         # to do changes before the page loads selecting only admin user to use ForeignKey
