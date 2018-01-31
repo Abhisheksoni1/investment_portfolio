@@ -44,8 +44,7 @@ class Client(models.Model):
 
 
 class Fund(models.Model):
-
-    fund_type = models.ForeignKey(FundTypes, on_delete=models.CASCADE)
+    fund_type = models.ForeignKey(FundTypes)
     portfolio = models.ForeignKey(Portfolio)
     user = models.ForeignKey(User)
     date = models.DateTimeField()
@@ -76,7 +75,7 @@ class Fund(models.Model):
         ordering = ('date', 'portfolio')
 
     def __str__(self):
-        return self.fund_type.name + "_" + self.portfolio.name + "_" + self.user.username + "_" + str(self.date)
+        return "_" + self.portfolio.name + "_" + self.user.username + "_" + str(self.date)
 
     # def save(self, *args, **kwargs):
     #
