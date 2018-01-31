@@ -21,7 +21,8 @@ def admin_bar(request, id=None):
             portfolio = Portfolio.objects.all()[0]
             funds = Fund.objects.filter(user=request.user, portfolio=portfolio)
         else:
-            funds = Fund.objects.get(user=request.user, portfolio__id=id)
+            portfolio = Portfolio.objects.get(id=id)
+            funds = Fund.objects.filter(user=request.user, portfolio=portfolio)
 
         dates = list(map(lambda i: i.date.strftime('%m-%d-%Y'), funds))
         net_nav = list(map(lambda i: float(i.net_nav), funds))
@@ -30,6 +31,7 @@ def admin_bar(request, id=None):
         return HttpResponse(json.dumps(item), content_type='application/json')
 
     except Exception as e:
+        print(e)
         return HttpResponse(json.dumps({'error': 404}), content_type='application/json')
 
 

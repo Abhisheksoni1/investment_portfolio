@@ -25,7 +25,7 @@ urlpatterns = [
     url(r'^$', views.home, name='home'),
     url(r'^admin_bar/$', views.admin_bar, name='admin_bar'),
     url(r'^admin_bar/(?P<id>\d+)$', views.admin_bar, name='admin_bar'),
-    url(r'^(?P<id>\d+)$', views.bar, name='home'),
+    url(r'^bar/(?P<id>\d+)$', views.bar, name='bar'),
 
 
 ]
