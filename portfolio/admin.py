@@ -6,7 +6,7 @@ admin.site.site_header = 'Investment Portfolio'
 admin.site.index_title = 'Investment Portfolio Site Administrator'
 
 admin.site.register(Portfolio)
-admin.site.register(FundTypes)
+admin.site.register(FundType)
 
 
 class ClientAdmin(admin.ModelAdmin):
@@ -44,9 +44,9 @@ class FundAdmin(admin.ModelAdmin):
         # context['adminform'].form.fields['fund_type'].queryset = FundTypes.objects.all()
         return super(FundAdmin, self).render_change_form(request, context, *args, **kwargs)
 
-    list_display = ('fund_type', 'portfolio', 'user', 'cash_balance', 'cost', 'market_value', 'total_asset',
+    list_display = ('fund_name', 'portfolio', 'user', 'cash_balance', 'cost', 'market_value', 'total_asset',
                     'realized', 'gross_nav', 'expenses', 'net_nav', 'shares',)
-    list_filter = ('fund_type', 'portfolio', 'user')
+    list_filter = ('fund_name', 'portfolio', 'user')
     change_list_template = 'admin/fund_change_list.html'
     change_form_template = 'admin/fund_change_form.html'
 

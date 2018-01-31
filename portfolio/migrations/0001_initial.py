@@ -55,10 +55,10 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='FundTypes',
+            name='FundType',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=128)),
+                ('name', models.CharField(max_length=50)),
             ],
         ),
         migrations.CreateModel(
@@ -70,8 +70,8 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='fund',
-            name='fund_type',
-            field=models.ForeignKey(to='portfolio.FundTypes'),
+            name='fund_name',
+            field=models.ForeignKey(to='portfolio.FundType'),
         ),
         migrations.AddField(
             model_name='fund',

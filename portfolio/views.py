@@ -11,7 +11,7 @@ from django.shortcuts import render
 from portfolio.forms import LoginForm
 from django.shortcuts import redirect
 
-from portfolio.models import Client, Fund, Portfolio, FundTypes
+from portfolio.models import Client, Fund, Portfolio, FundType
 
 
 def parse_obj(obj):
@@ -30,7 +30,7 @@ def parse_obj(obj):
 def fund_data(request, id=None):
     try:
         if id:
-            fund = FundTypes.objects.get(id=id)
+            fund = FundType.objects.get(id=id)
         else:
             return HttpResponse(json.dumps({'error': 404}), content_type='application/json')
         portoliio = Portfolio.objects.all()

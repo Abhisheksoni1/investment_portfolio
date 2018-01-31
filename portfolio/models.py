@@ -2,8 +2,6 @@ from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 
 class Portfolio(models.Model):
@@ -13,8 +11,8 @@ class Portfolio(models.Model):
         return self.name
 
 
-class FundTypes(models.Model):
-    name = models.CharField(max_length=128)
+class FundType(models.Model):
+    name = models.CharField(max_length=50)
 
     def __str__(self):
         return self.name
@@ -44,7 +42,7 @@ class Client(models.Model):
 
 
 class Fund(models.Model):
-    fund_type = models.ForeignKey(FundTypes)
+    fund_name = models.ForeignKey(FundType)
     portfolio = models.ForeignKey(Portfolio)
     user = models.ForeignKey(User)
     date = models.DateTimeField()
