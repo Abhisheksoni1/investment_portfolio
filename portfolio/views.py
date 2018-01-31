@@ -11,8 +11,39 @@ from django.shortcuts import render
 from portfolio.forms import LoginForm
 from django.shortcuts import redirect
 
-from portfolio.models import Client, Fund, Portfolio
+from portfolio.models import Client, Fund, Portfolio, FundTypes
 
+
+def parse_obj(obj):
+    obj_dict = {'total_injected': float(obj.total_injected),
+                'total_asset': float(obj.total_asset),
+                'shares': float(obj.shares),
+                'cumul_realized': float(obj.cumul_realized),
+                'nav_share': float(obj.nav_share),
+                'cumul_variation': float(obj.cumul_variation),
+                'set': float(obj.set)
+             }
+    return obj_dict
+
+
+@staff_member_required
+def fund_data(request, id):
+    try:
+        fund = FundTypes.objects.get(id=id)
+        portoliio = Portfolio.objects.all()
+        fund_list = {}
+        for i in portoliio:
+            _fund = Fund.objects.filter(portfolio=i, fund_type=fund, user=request.user)
+            # stock_fund = funds.filter(portfolio=i, fund_type='stocks', user=request.user)
+            if _fund:
+                _fund = _fund[::-1]
+                fund_list.update({i.id: parse_obj(_fund[0])})
+            else:
+                fund_list.update({i.id: ''})
+
+        return HttpResponse(json.dumps({'fund_list':fund_list}), content_type='application/json')
+    except Exception as e:
+        return HttpResponse(json.dumps({'error': 404}), content_type='application/json')
 
 @staff_member_required
 def admin_bar(request, id=None):

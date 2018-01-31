@@ -26,6 +26,6 @@ urlpatterns = [
     url(r'^admin_bar/$', views.admin_bar, name='admin_bar'),
     url(r'^admin_bar/(?P<id>\d+)$', views.admin_bar, name='admin_bar'),
     url(r'^bar/(?P<id>\d+)$', views.bar, name='bar'),
-
+    url(r'^fund_data/(?P<id>\d+)$', views.fund_data, name='fund_data'),
 
 ]
