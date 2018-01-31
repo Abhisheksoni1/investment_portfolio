@@ -45,7 +45,7 @@ class Client(models.Model):
 
 class Fund(models.Model):
 
-    fund_type = models.ForeignKey(FundTypes)
+    fund_type = models.ForeignKey(FundTypes, on_delete=models.CASCADE)
     portfolio = models.ForeignKey(Portfolio)
     user = models.ForeignKey(User)
     date = models.DateTimeField()
