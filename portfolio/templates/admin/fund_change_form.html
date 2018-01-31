@@ -78,15 +78,18 @@
                     e.preventDefault();
                     showAddAnotherPopup(this);
                 });
+
                 var prevDividend = $('#id_dividends').val();
                 var prevSet = $('#id_set').val();
                 var prevSetVar = $('#id_set_var').val();
 
 
                 $( "#id_fund_type" ).change(function() {
+
+
                     var fund = $('#id_fund_type').val();
 
-                    if(fund  == "crypto"){
+                    if(fund  == "1"){
                         $(".field-dividends").css("display", "none");
                         $(".field-set").css("display", "none");
                         $(".field-set_var").css("display", "none");
@@ -104,6 +107,26 @@
                         $('#id_set').val(prevSet);
                         $('#id_set_var').val(prevSetVar);
                     }
+
+                 var chartDataUrl = "{% url "fund_data" %}"+""+fund;
+    $.getJSON(chartDataUrl,
+    function(data) {
+        $("#chart_panel").show();
+        $("#noData").hide();
+    if(data['dates'].length >0){
+    user_graph.xAxis.categories = data['dates'];
+    user_graph.series[0].name = 'price in $';
+    user_graph.series[0].data = data['net_nav'];
+    var chart = new Highcharts.Chart(user_graph);
+    }else{
+        $("#chart_panel").hide();
+        $("#noData").show();
+
+    }
+    });
+
+
+
                 });
 
                 var fundData = {"total_injected": 0, "total_asset": 0, "shares": 0, "cumul_realized": 0, "nav_share": 1, "cumul_variation": 0,"set": 1};

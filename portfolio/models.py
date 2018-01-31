@@ -19,6 +19,7 @@ class FundTypes(models.Model):
     def __str__(self):
         return self.name
 
+
 class Client(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     shares = models.DecimalField(max_digits=32, decimal_places=4, default=0)
@@ -75,7 +76,7 @@ class Fund(models.Model):
         ordering = ('date', 'portfolio')
 
     def __str__(self):
-        return self.fund_type + "_" + self.portfolio.name + "_" + self.user.username + "_" + str(self.date)
+        return self.fund_type.name + "_" + self.portfolio.name + "_" + self.user.username + "_" + str(self.date)
 
     # def save(self, *args, **kwargs):
     #
