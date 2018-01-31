@@ -27,9 +27,12 @@ def parse_obj(obj):
 
 
 @staff_member_required
-def fund_data(request, id):
+def fund_data(request, id=None):
     try:
-        fund = FundTypes.objects.get(id=id)
+        if id:
+            fund = FundTypes.objects.get(id=id)
+        else:
+            return HttpResponse(json.dumps({'error': 404}), content_type='application/json')
         portoliio = Portfolio.objects.all()
         fund_list = {}
         for i in portoliio:

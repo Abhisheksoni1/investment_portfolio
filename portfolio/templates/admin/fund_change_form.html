@@ -82,10 +82,10 @@
                 var prevDividend = $('#id_dividends').val();
                 var prevSet = $('#id_set').val();
                 var prevSetVar = $('#id_set_var').val();
+                var allFundData = "";
 
 
                 $( "#id_fund_type" ).change(function() {
-
 
                     var fund = $('#id_fund_type').val();
 
@@ -108,48 +108,22 @@
                         $('#id_set_var').val(prevSetVar);
                     }
 
-                 var chartDataUrl = "{% url "fund_data" %}"+""+fund;
-    $.getJSON(chartDataUrl,
-    function(data) {
-        $("#chart_panel").show();
-        $("#noData").hide();
-    if(data['dates'].length >0){
-    user_graph.xAxis.categories = data['dates'];
-    user_graph.series[0].name = 'price in $';
-    user_graph.series[0].data = data['net_nav'];
-    var chart = new Highcharts.Chart(user_graph);
-    }else{
-        $("#chart_panel").hide();
-        $("#noData").show();
-
-    }
-    });
-
-
+                 var fundDataUrl = "{% url "fund_data" %}"+""+fund;
+                 $.getJSON(fundDataUrl,function(data) {
+                     allFundData = data.fund_list;
+                 });
 
                 });
 
                 var fundData = {"total_injected": 0, "total_asset": 0, "shares": 0, "cumul_realized": 0, "nav_share": 1, "cumul_variation": 0,"set": 1};
 
-
                  $( "#id_portfolio" ).change(function() {
 
                         var portfolio = $('#id_portfolio').val();
-                        var fundValue = "";
-                        var fund = $('#id_fund_type').val();
-                        if(fund  == "crypto"){
-                             fundValue = $('#cryptoDataPre').val();
-                        }else{
-                             fundValue = $('#stockDataPre').val();
-                        }
-
-                        fundValue = JSON.parse(fundValue);
-
-                        if(fundValue[portfolio]){
-                            fundData = fundValue[portfolio];
+                        if(allFundData[portfolio]){
+                            fundData = allFundData[portfolio];
                          }
                 });
-
 
                 $('#id_total_injected').on('focus', function(){
                     if(!$('#id_total_injected').val()){
@@ -257,8 +231,8 @@
                     }
                 });
 
-$("label[for*='id_per_unrealized']").html("% unrealized");
-$("label[for*='id_per_variation']").html("% variation");
+            $("label[for*='id_per_unrealized']").html("% unrealized");
+            $("label[for*='id_per_variation']").html("% variation");
 
 
 
