@@ -53,7 +53,7 @@ class FundAdmin(admin.ModelAdmin):
     def changelist_view(self, request, extra_context=None):
         response = super(FundAdmin, self).changelist_view(
             request,
-            extra_context=extra_context,
+            extra_context=extra_context
         )
         portfolio = Portfolio.objects.all()
         # print(portfolio)
