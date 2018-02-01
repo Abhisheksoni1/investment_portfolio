@@ -4,14 +4,16 @@ from django.db import models
 # Create your models here.
 
 
-class Portfolio(models.Model):
+class FundType(models.Model):
     name = models.CharField(max_length=50)
 
     def __str__(self):
         return self.name
 
 
-class FundType(models.Model):
+class Portfolio(models.Model):
+    fund_name = models.ForeignKey(FundType)
+    user = models.ForeignKey(User)
     name = models.CharField(max_length=50)
 
     def __str__(self):
@@ -42,9 +44,7 @@ class Client(models.Model):
 
 
 class Fund(models.Model):
-    fund_name = models.ForeignKey(FundType)
     portfolio = models.ForeignKey(Portfolio)
-    user = models.ForeignKey(User)
     date = models.DateTimeField()
     buying = models.DecimalField(max_digits=32, decimal_places=5, default=0)
     redemption = models.DecimalField(max_digits=32, decimal_places=5, default=0)
@@ -73,7 +73,7 @@ class Fund(models.Model):
         ordering = ('date', 'portfolio')
 
     def __str__(self):
-        return "_" + self.portfolio.name + "_" + self.user.username + "_" + str(self.date)
+        return "_" + self.portfolio.name + "_"+ str(self.date)
 
     # def save(self, *args, **kwargs):
     #

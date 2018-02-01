@@ -66,22 +66,14 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=50)),
+                ('fund_name', models.ForeignKey(to='portfolio.FundType')),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
-        ),
-        migrations.AddField(
-            model_name='fund',
-            name='fund_name',
-            field=models.ForeignKey(to='portfolio.FundType'),
         ),
         migrations.AddField(
             model_name='fund',
             name='portfolio',
             field=models.ForeignKey(to='portfolio.Portfolio'),
-        ),
-        migrations.AddField(
-            model_name='fund',
-            name='user',
-            field=models.ForeignKey(to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='client',
