@@ -79,43 +79,23 @@
                     showAddAnotherPopup(this);
                 });
 
-                var prevDividend = $('#id_dividends').val();
-                var prevSet = $('#id_set').val();
-                var prevSetVar = $('#id_set_var').val();
                 var allFundData = "";
+                var fundData = {"total_injected": 0, "total_asset": 0, "shares": 0, "cumul_realized": 0, "nav_share": 1, "cumul_variation": 0,"set": 1};
 
 
                 $( "#id_portfolio" ).change(function() {
 
-                    var fund = $('#id_portfolio').val();
-
-                    if(fund  == "1"){
-                        $(".field-dividends").css("display", "none");
-                        $(".field-set").css("display", "none");
-                        $(".field-set_var").css("display", "none");
-                        prevDividends = $('#id_dividends').val();
-                        prevSet = $('#id_set').val();
-                        prevSetVar = $('#id_set_var').val();
-                        $('#id_dividends').val('0');
-                        $('#id_set').val('0');
-                        $('#id_set_var').val('0');
-                    }else{
-                        $(".field-dividends").css("display", "block");
-                        $(".field-set").css("display", "block");
-                        $(".field-set_var").css("display", "block");
-                        $('#id_dividends').val(prevDividends);
-                        $('#id_set').val(prevSet);
-                        $('#id_set_var').val(prevSetVar);
-                    }
+                 var fund = $('#id_portfolio').val();
 
                  var fundDataUrl = "{% url "fund_data" %}"+""+fund;
                  $.getJSON(fundDataUrl,function(data) {
                      allFundData = data.fund_list;
+                     if(allFundData['1']){
+                            fundData = allFundData['1'];
+                     }
                  });
 
                 });
-
-                var fundData = {"total_injected": 0, "total_asset": 0, "shares": 0, "cumul_realized": 0, "nav_share": 1, "cumul_variation": 0,"set": 1};
 
                  $( "#id_portfolio" ).change(function() {
 
