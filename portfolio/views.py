@@ -60,7 +60,8 @@ def admin_bar(request, id=None):
         dates = list(map(lambda i: i.date.strftime('%m-%d-%Y'), funds))
         net_nav = list(map(lambda i: float(i.net_nav), funds))
         item = {'dates': dates,
-                'net_nav': net_nav}
+                'net_nav': net_nav,
+                'name': portfolio.name}
         return HttpResponse(json.dumps(item), content_type='application/json')
 
     except Exception as e:
@@ -80,7 +81,8 @@ def bar(request, id=None):
             dates = list(map(lambda i: i.date.strftime('%m-%d-%Y'), data))
             net_nav = list(map(lambda i: (float(client.shares)*float(i.net_nav))/100, data))
             item = {'dates': dates,
-                    'net_nav': net_nav}
+                    'net_nav': net_nav,
+                    'name': client.portfolio.name}
             return HttpResponse(json.dumps(item), content_type='application/json')
         except Exception as e:
             print(e)
