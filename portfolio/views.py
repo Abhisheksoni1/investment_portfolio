@@ -30,23 +30,22 @@ def parse_obj(obj):
 def fund_data(request, id=None):
     try:
         if id:
-            fund = FundType.objects.get(id=id)
+            portfolio = Portfolio.objects.get(id=id)
         else:
             return HttpResponse(json.dumps({'error': 404}), content_type='application/json')
-        portoliio = Portfolio.objects.all()
         fund_list = {}
-        for i in portoliio:
-            _fund = Fund.objects.filter(portfolio=i, fund_type=fund, user=request.user)
-            # stock_fund = funds.filter(portfolio=i, fund_type='stocks', user=request.user)
-            if _fund:
-                _fund = _fund[::-1]
-                fund_list.update({i.id: parse_obj(_fund[0])})
-            else:
-                fund_list.update({i.id: ''})
-
-        return HttpResponse(json.dumps({'fund_list':fund_list}), content_type='application/json')
+        _fund = Fund.objects.filter(portfolio=portfolio)
+        # stock_fund = funds.filter(portfolio=i, fund_type='stocks', user=request.user)
+        if _fund:
+            _fund = _fund[::-1]
+            fund_list.update({portfolio.id: parse_obj(_fund[0])})
+        else:
+            fund_list.update({portfolio.id: ''})
+        # print(fund_list)
+        return HttpResponse(json.dumps({'fund_list': fund_list}), content_type='application/json')
     except Exception as e:
         return HttpResponse(json.dumps({'error': 404}), content_type='application/json')
+
 
 @staff_member_required
 def admin_bar(request, id=None):
