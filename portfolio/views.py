@@ -38,9 +38,9 @@ def fund_data(request, id=None):
         # stock_fund = funds.filter(portfolio=i, fund_type='stocks', user=request.user)
         if _fund:
             _fund = _fund[::-1]
-            fund_list.update({portfolio.id: parse_obj(_fund[0])})
+            fund_list.update({1: parse_obj(_fund[0])})
         else:
-            fund_list.update({portfolio.id: ''})
+            fund_list.update({1: ''})
         # print(fund_list)
         return HttpResponse(json.dumps({'fund_list': fund_list}), content_type='application/json')
     except Exception as e:
