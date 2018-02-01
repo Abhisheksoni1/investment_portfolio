@@ -52,10 +52,10 @@ def admin_bar(request, id=None):
     try:
         if not id:
             portfolio = Portfolio.objects.all()[0]
-            funds = Fund.objects.filter(user=request.user, portfolio=portfolio)
+            funds = Fund.objects.filter(portfolio=portfolio)
         else:
             portfolio = Portfolio.objects.get(id=id)
-            funds = Fund.objects.filter(user=request.user, portfolio=portfolio)
+            funds = Fund.objects.filter(portfolio=portfolio)
 
         dates = list(map(lambda i: i.date.strftime('%m-%d-%Y'), funds))
         net_nav = list(map(lambda i: float(i.net_nav), funds))
