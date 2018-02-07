@@ -58,7 +58,7 @@ def admin_bar(request, id=None):
             funds = Fund.objects.filter(portfolio=portfolio)
 
         dates = list(map(lambda i: i.date.strftime('%m-%d-%Y'), funds))
-        net_nav = list(map(lambda i: round(float(i.net_nav)/float(i.shares)), funds))
+        net_nav = list(map(lambda i: round(float(i.net_nav)/float(i.shares), 3), funds))
         item = {'dates': dates,
                 'net_nav': net_nav,
                 'name': portfolio.name}
@@ -79,7 +79,7 @@ def bar(request, id=None):
 
             data = Fund.objects.filter(user=client.investor, portfolio=client.portfolio)
             dates = list(map(lambda i: i.date.strftime('%m-%d-%Y'), data))
-            net_nav = list(map(lambda i: round(float(i.net_nav)/float(i.shares)), data))
+            net_nav = list(map(lambda i: round(float(i.net_nav)/float(i.shares), 3), data))
             item = {'dates': dates,
                     'net_nav': net_nav,
                     'name': client.portfolio.name}
