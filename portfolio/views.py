@@ -77,7 +77,7 @@ def bar(request, id=None):
             else:
                 client = Client.objects.get(user=request.user, portfolio__id=id)
 
-            data = Fund.objects.filter(user=client.investor, portfolio=client.portfolio)
+            data = Fund.objects.filter(portfolio=client.portfolio)
             dates = list(map(lambda i: i.date.strftime('%m-%d-%Y'), data))
             net_nav = list(map(lambda i: round(float(i.net_nav)/float(i.shares), 2), data))
             item = {'dates': dates,
