@@ -59,7 +59,11 @@ class FundAdmin(admin.ModelAdmin):
         )
         portfolio = Portfolio.objects.all()
         # print(portfolio)
-        response.context_data.update({'portfolios': portfolio})
+        try:
+            # when we delete object is gives exception
+            response.context_data.update({'portfolios': portfolio})
+        except Exception as e:
+            pass
         return response
 
     def changeform_view(self, request, object_id=None, form_url='', extra_context=None):
