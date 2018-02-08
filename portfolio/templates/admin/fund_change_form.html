@@ -108,35 +108,35 @@
                 $('#id_total_injected').on('focus', function(){
                     if(!$('#id_total_injected').val()){
                         var tempValue = parseFloat(fundData.total_injected) +  parseFloat($('#id_buying').val()) - $('#id_redemption').val() - $('#id_dividends').val();
-                        $('#id_total_injected').val(tempValue.toFixed(2));
+                        $('#id_total_injected').val(tempValue.toFixed(3));
                     }
                 });
 
                 $('#id_total_asset').on('focus', function(){
                     if(!$('#id_total_asset').val()){
                         var tempValue =parseFloat($('#id_cash_balance').val()) + parseFloat($('#id_cost').val());
-                        $('#id_total_asset').val(tempValue.toFixed(2));
+                        $('#id_total_asset').val(tempValue.toFixed(3));
                     }
                 });
 
                  $('#id_unrealized').on('focus', function(){
                     if(!$('#id_unrealized').val()){
                         var tempValue =$('#id_market_value').val() - $('#id_cost').val();
-                        $('#id_unrealized').val(tempValue.toFixed(2));
+                        $('#id_unrealized').val(tempValue.toFixed(3));
                     }
                 });
 
                  $('#id_per_unrealized').on('focus', function(){
                     if(!$('#id_per_unrealized').val()){
                         var tempValue =($('#id_unrealized').val() / $('#id_cost').val()) * 100;
-                        $('#id_per_unrealized').val(tempValue.toFixed(2));
+                        $('#id_per_unrealized').val(tempValue.toFixed(3));
                     }
                 });
 
                 $('#id_realized').on('focus', function(){
                     if(!$('#id_realized').val()){
                         var tempValue =$('#id_total_asset').val() - fundData.total_asset  - parseFloat($('#id_buying').val()) + parseFloat($('#id_redemption').val()) + parseFloat($('#id_dividends').val());
-                        $('#id_realized').val(tempValue.toFixed(2));
+                        $('#id_realized').val(tempValue.toFixed(3));
                     }
                 });
                 //        self.realized = self.total_asset - total_asset_previous - self.buying + self.redemption + self.dividends
@@ -144,7 +144,7 @@
                 $('#id_cumul_realized').on('focus', function(){
                     if(!$('#id_cumul_realized').val()){
                         var tempValue = parseFloat(fundData.cumul_realized) + parseFloat($('#id_realized').val());
-                        $('#id_cumul_realized').val(tempValue.toFixed(2));
+                        $('#id_cumul_realized').val(tempValue.toFixed(3));
                     }
                 });
                 // self.cumul_realized = cumul_previous + self.realized
@@ -153,21 +153,21 @@
                 $('#id_gross_nav').on('focus', function(){
                     if(!$('#id_gross_nav').val()){
                         var tempValue =parseFloat($('#id_cash_balance').val()) + parseFloat($('#id_market_value').val());
-                        $('#id_gross_nav').val(tempValue.toFixed(2));
+                        $('#id_gross_nav').val(tempValue.toFixed(3));
                     }
                 });
 
                  $('#id_net_nav').on('focus', function(){
                     if(!$('#id_net_nav').val()){
                         var tempValue =$('#id_gross_nav').val() - $('#id_expenses').val();
-                        $('#id_net_nav').val(tempValue.toFixed(2));
+                        $('#id_net_nav').val(tempValue.toFixed(3));
                     }
                 });
 
                 $('#id_shares').on('focus', function(){
                     if(!$('#id_shares').val()){
                         var tempValue = parseFloat(fundData.shares) + (( $('#id_buying').val() - $('#id_dividends').val()) / fundData.nav_share ) - (  $('#id_redemption').val() / fundData.nav_share);
-                        $('#id_shares').val(tempValue.toFixed(2));
+                        $('#id_shares').val(tempValue.toFixed(3));
                     }
                 });
 
@@ -177,14 +177,14 @@
                  $('#id_nav_share').on('focus', function(){
                     if(!$('#id_nav_share').val()){
                         var tempValue =$('#id_net_nav').val() / $('#id_shares').val();
-                        $('#id_nav_share').val(tempValue.toFixed(2));
+                        $('#id_nav_share').val(tempValue.toFixed(3));
                     }
                 });
 
                 $('#id_per_variation').on('focus', function(){
                     if(!$('#id_per_variation').val()){
                         var tempValue =($('#id_nav_share').val() / fundData.nav_share -1);
-                        $('#id_per_variation').val(tempValue.toFixed(2));
+                        $('#id_per_variation').val(tempValue.toFixed(3));
                     }
                 });
 
@@ -194,7 +194,7 @@
                 $('#id_cumul_variation').on('focus', function(){
                     if(!$('#id_cumul_variation').val()){
                         var tempValue = parseFloat(fundData.cumul_variation) +  parseFloat($('#id_per_variation').val());
-                        $('#id_cumul_variation').val(tempValue.toFixed(2));
+                        $('#id_cumul_variation').val(tempValue.toFixed(3));
                     }
                 });
 
@@ -207,7 +207,7 @@
                             fundData.set = 1;
                         }
                         var tempValue = ($('#id_set').val() - fundData.set ) / fundData.set ;
-                        $('#id_set_var').val(tempValue.toFixed(2));
+                        $('#id_set_var').val(tempValue.toFixed(3));
                     }
                 });
 
