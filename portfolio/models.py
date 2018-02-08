@@ -27,6 +27,10 @@ class Client(models.Model):
     nav = models.DecimalField(default=0, max_digits=32, decimal_places=4)
     value = models.DecimalField(decimal_places=4, max_digits=32, default=0)
     investor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='investor')
+    date = models.DateTimeField()
+
+    class Meta:
+        ordering = ('date',)
 
     def __str__(self):
         return self.user.first_name + self.portfolio.name

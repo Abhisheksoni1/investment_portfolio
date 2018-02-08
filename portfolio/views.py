@@ -75,9 +75,9 @@ def bar(request, id=None):
             if id is None:
                 client = Client.objects.filter(user=request.user)[0]
             else:
-                client = Client.objects.get(user=request.user, portfolio__id=id)
+                client = Client.objects.get(id=id)
 
-            data = Fund.objects.filter(portfolio=client.portfolio)
+            data = Fund.objects.filter(portfolio=client.portfolio, date__gte=client.date.date())
             dates = list(map(lambda i: i.date.strftime('%m-%d-%Y'), data))
             net_nav = list(map(lambda i: round(float(i.net_nav)/float(i.shares), 2), data))
             item = {'dates': dates,
@@ -120,9 +120,9 @@ def signup(request):
 @login_required
 def home(request):
     data = Client.objects.filter(user=request.user)
-    portfolio = map(lambda i: i.portfolio, data)
+    clients = map(lambda i: i, data)
     # print(portfolio)
-    return render(request, 'home.html', {'portfolios': portfolio})
+    return render(request, 'home.html', {'clients': clients})
 
 
 def login_view(request):

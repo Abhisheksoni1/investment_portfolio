@@ -25,7 +25,7 @@ class ClientAdmin(admin.ModelAdmin):
         context['adminform'].form.fields['investor'].queryset = User.objects.filter(is_staff=True)
         return super(ClientAdmin, self).render_change_form(request, context, *args, **kwargs)
 
-    list_display = ('user', 'shares', 'portfolio')
+    list_display = ('user', 'shares', 'portfolio', 'date')
     list_filter = ('user', 'portfolio')
 
 
