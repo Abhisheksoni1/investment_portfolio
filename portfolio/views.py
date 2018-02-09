@@ -70,7 +70,7 @@ def admin_bar(request, id=None):
 
 
 def bar(request, id=None):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated():
         try:
             if id is None:
                 client = Client.objects.filter(user=request.user)[0]
@@ -84,11 +84,28 @@ def bar(request, id=None):
                     'net_nav': net_nav,
                     'name': client.portfolio.name}
             return HttpResponse(json.dumps(item), content_type='application/json')
-        except Exception as e:
-            print(e)
+        except Exception \
+                as e:
+            # print(e)
             return HttpResponse(json.dumps({'error': 404}), content_type='application/json')
     else:
-        return HttpResponse(json.dumps({'error': 'not authorise'}), content_type='application/json')
+        # user is not registered it means we need to show all the records for public
+        try:
+            if id is None:
+                portfolio = Portfolio.objects.all()[0]
+            else:
+                portfolio = Portfolio.objects.get(id=id)
+
+            data = Fund.objects.filter(portfolio=portfolio)
+            dates = list(map(lambda i: i.date.strftime('%m-%d-%Y'), data))
+            net_nav = list(map(lambda i: round(float(i.net_nav)/float(i.shares), 2), data))
+            item = {'dates': dates,
+                    'net_nav': net_nav,
+                    'name': portfolio.name}
+            return HttpResponse(json.dumps(item), content_type='application/json')
+        except Exception as e:
+            # print(e)
+            return HttpResponse(json.dumps({'error1': 404}), content_type='application/json')
 
 
 def signup(request):
@@ -117,12 +134,16 @@ def signup(request):
     return render(request, 'signup.html', {'form': form})
 
 
-@login_required
 def home(request):
-    data = Client.objects.filter(user=request.user)
-    clients = map(lambda i: i, data)
-    # print(portfolio)
-    return render(request, 'home.html', {'clients': clients})
+    if request.user.is_authenticated():
+        data = Client.objects.filter(user=request.user)
+        clients = map(lambda i: i, data)
+        # print(portfolio)
+        return render(request, 'home.html', {'clients': clients})
+    else:
+        data = Portfolio.objects.all()
+        portfolio = map(lambda i: i, data)
+        return render(request, 'home.html', {'portfolios': portfolio})
 
 
 def login_view(request):

@@ -2,7 +2,7 @@
 {% block content %}
 
 
-{% if user.is_authenticated %}
+
 
 <header id="header">
     <nav class="navbar navbar-inverse navbar-fixed-top" style="border-style: none;">
@@ -12,8 +12,16 @@
                     <span style="color:#FFB03B;font-weight:bold;margin-top:10px;">Investment portfolio</span>
                 </div>
                 <div class="col-md-6">
-                    <span class="pull-right" style="color:White;font-weight:bold;">Welcome {{ user.username }} | <a
-                            href="{% url 'logout' %}">Logout</a></span>
+                    <span class="pull-right" style="color:White;font-weight:bold;">
+                        Welcome
+                        {% if request.user.is_authenticated %}
+                            {{ user.username }} <a href="{% url 'logout' %}">Logout</a>
+                        {% else %}
+                            <a href="{% url 'signup' %}">Sign up</a><b>|</b><a
+                            href="{% url 'login' %}">Login</a>
+                        {% endif %}
+                    </span>
+
                 </div>
 
             </div>
@@ -25,12 +33,18 @@
     <div class="row">
         <div class=" col-md-3 col-xs-12">
             <h3><b>Portfolio</b></h3>
-            {% for client in clients %}
-            <div onclick="portfolioFncn({{client.id}})"> {{ client.portfolio.name.upper }}</div>
-            {% endfor %}
-            {{dates}}
-            <br />
-            {{net_nav}}
+            {% if request.user.is_authenticated %}
+                {% for client in clients %}
+                <div onclick="portfolioFncn({{client.id}})"> {{ client.portfolio.name.upper }}</div>
+                {% endfor %}
+                <!--{{dates}}-->
+                <br />
+                <!--{{net_nav}}-->
+            {% else %}
+                {% for portfolio in portfolios %}
+                <div onclick="portfolioFncn({{portfolio.id}})"> {{ portfolio.name.upper }}</div>
+                {% endfor %}
+            {% endif %}
         </div>
         <div class="col-md-8 col-xs-12">
             <div class="panel panel-default">
@@ -43,10 +57,7 @@
 </div>
 
 
-{% else %}
-<span class="pull-right menu-icon"> <a href="{% url 'signup' %}">Sign up</a><b>|</b><a
-        href="{% url 'login' %}">Login</a></span>
-{% endif %}
+
 
 <script type="text/javascript">
 
